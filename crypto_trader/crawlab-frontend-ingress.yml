@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: crawlab-frontend-ingress
+  namespace: crawler-platform
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/tls-acme: 'true'
+spec:
+  tls:
+  - hosts:
+    - crawlab.cuteyj.top
+    secretName: crawlab-frontend-letsencrypt-prod
+  rules:
+  - host: crawlab.cuteyj.top
+    http:
+      paths:
+      - backend:
+          serviceName: crawlab-frontend
+          servicePort: 5000

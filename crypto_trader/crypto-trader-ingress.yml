@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: crypto-trader-ingress
+  namespace: crawler-platform
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/tls-acme: 'true'
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+spec:
+  tls:
+  - hosts:
+    - crypto.cuteyj.top
+    secretName: crypto-trader-letsencrypt-prod
+  rules:
+  - host: crypto.cuteyj.top
+    http:
+      paths:
+      - backend:
+          serviceName: crypto-trader
+          servicePort: 8000

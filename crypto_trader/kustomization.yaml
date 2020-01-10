@@ -1,0 +1,16 @@
+namespace: crawler-platform
+secretGenerator:
+- name: mysql-pass
+  literals:
+  - password=LZD9mdW4GY9L3xQuqzzdmE7r
+resources:
+- mysql-deployment.yml
+- redis-deployment.yml
+- mongo-deployment.yml
+- crawlab-master-deployment.yml
+- crawlab-master-ingress.yml
+- crawlab-frontend-deployment.yml
+- crawlab-frontend-ingress.yml
+- crawlab-worker-deployment.yml
+- crypto-trader-deployment.yml
+- crypto-trader-ingress.yml

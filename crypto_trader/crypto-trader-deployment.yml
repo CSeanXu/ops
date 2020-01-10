@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: crypto-trader
+  namespace: crawler-platform
+  labels:
+    app: crypto-trader
+spec:
+  ports:
+    - port: 8000
+  selector:
+    app: crypto-trader
+  clusterIP: None
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: crypto-trader
+  namespace: crawler-platform
+  labels:
+    app: crypto-trader
+spec:
+  selector:
+    matchLabels:
+      app: crypto-trader
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      namespace: crawler-platform
+      labels:
+        app: crypto-trader
+    spec:
+      containers:
+      - image: bitsean/crypto_trader:1.4
+        name: crypto-trader
+        command: ["python", "manage.py", "runserver", "0:8000"]
+        env:
+        - name: MYSQL_PASS
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: password
+        - name: MYSQL_HOST
+          value: "crawler-mysql"
+        - name: MYSQL_PORT
+          value: "3306"
+        ports:
+        - containerPort: 8000

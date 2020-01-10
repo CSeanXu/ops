@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: crawlab-frontend
+  namespace: crawler-platform
+  labels:
+    app: crawlab-frontend
+spec:
+  ports:
+    - port: 5000
+  selector:
+    app: crawlab-frontend
+  clusterIP: None
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: crawlab-frontend
+  namespace: crawler-platform
+  labels:
+    app: crawlab-frontend
+spec:
+  selector:
+    matchLabels:
+      app: crawlab-frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      namespace: crawler-platform
+      labels:
+        app: crawlab-frontend
+    spec:
+      containers:
+      - image: bitsean/crawlab-frontend:0.2
+        name: crawlab-frontend
+        env:
+        - name: CRAWLAB_API_ADDRESS
+          value: "https://crawlab-master.cuteyj.top"
+        ports:
+        - containerPort: 5000

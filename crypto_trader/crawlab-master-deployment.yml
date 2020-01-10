@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: crawlab-master
+  namespace: crawler-platform
+  labels:
+    app: crawlab-master
+spec:
+  ports:
+    - port: 8000
+  selector:
+    app: crawlab-master
+  clusterIP: None
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: crawlab-master
+  namespace: crawler-platform
+  labels:
+    app: crawlab-master
+spec:
+  selector:
+    matchLabels:
+      app: crawlab-master
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      namespace: crawler-platform
+      labels:
+        app: crawlab-master
+    spec:
+      containers:
+      - image: bitsean/crawlab-backend:0.3
+        name: crawlab-master
+        env:
+        - name: MYSQL_PASS
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: password
+        - name: MYSQL_HOST
+          value: "crawler-mysql"
+        - name: MYSQL_PORT
+          value: "3306"
+        - name: CRAWLAB_SERVER_MASTER
+          value: "Y"
+        - name: CRAWLAB_REDIS_ADDRESS
+          value: "crawler-redis"
+        - name: CRAWLAB_MONGO_HOST
+          value: "crawler-mongo"
+        ports:
+        - containerPort: 8000
