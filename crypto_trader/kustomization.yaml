@@ -1,4 +1,4 @@
-namespace: crawler-platform
+namespace: crypto-trader
 secretGenerator:
 - name: mysql-pass
   literals:

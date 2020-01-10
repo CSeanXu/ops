@@ -1,6 +1,6 @@
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: crawler-platform
+  name: crypto-trader
   labels:
-    name: crawler-platform
+    name: crypto-trader
