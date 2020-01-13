@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery-beat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: celery-beat
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: celery-beat
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+      - name: celery-beat
+        image: bitsean/crypto_trader:1.6
+        command: ['celery', '-A', 'crypto_trader', 'beat', '-l', 'info', '--scheduler', 'django_celery_beat.schedulers:DatabaseScheduler']
+        env:
+        - name: MYSQL_PASS
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: password
+        - name: MYSQL_HOST
+          value: "crawler-mysql"
+        - name: MYSQL_PORT
+          value: "3306"
+        - name: RABBITMQ_HOST
+          value: "queue"
+        - name: RABBITMQ_PASS
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-pass
+              key: password
+        - name: HUOBI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: huobi-api
+              key: key
+        - name: HUOBI_API_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: huobi-api
+              key: sec
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"

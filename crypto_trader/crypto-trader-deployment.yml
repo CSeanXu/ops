@@ -29,7 +29,7 @@ spec:
         app: crypto-trader
     spec:
       containers:
-      - image: bitsean/crypto_trader:1.4
+      - image: bitsean/crypto_trader:1.6
         name: crypto-trader
         command: ["python", "manage.py", "runserver", "0:8000"]
         env:

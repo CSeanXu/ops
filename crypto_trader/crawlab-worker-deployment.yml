@@ -12,7 +12,7 @@ spec:
   clusterIP: None
 ---
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: crawlab-worker
   labels:
@@ -21,8 +21,7 @@ spec:
   selector:
     matchLabels:
       app: crawlab-worker
-  strategy:
-    type: Recreate
+  serviceName: "crawlab-worker"
   replicas: 3
   template:
     metadata:

@@ -3,6 +3,13 @@ secretGenerator:
 - name: mysql-pass
   literals:
   - password=LZD9mdW4GY9L3xQuqzzdmE7r
+- name: rabbitmq-pass
+  literals:
+  - password=LZD9mdW4GY9L3xQuqzzdmE7s
+- name: huobi-api
+  literals:
+  - key=rfhfg2mkl3-a3422090-e71ee5ff-6bd5c
+  - sec=f64c88cb-5cd5a41c-d514f0fd-892ad
 resources:
 - mysql-deployment.yml
 - redis-deployment.yml
@@ -14,3 +21,6 @@ resources:
 - crawlab-worker-deployment.yml
 - crypto-trader-deployment.yml
 - crypto-trader-ingress.yml
+- rabbitmq-stateful-set.yml
+- celery-worker-deployment.yml
+- celery-beat-deployment.yml

@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: queue
+  labels:
+    app.kubernetes.io/instance: django
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: queue
+  serviceName: queue
+  template:
+    metadata:
+      labels:
+        app: queue
+    spec:
+      containers:
+      - name: queue
+        image: rabbitmq:3.8
+        env:
+        - name: RABBITMQ_DEFAULT_USER
+          value: guest
+        - name: RABBITMQ_DEFAULT_PASS
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-pass
+              key: password
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: queue
+  labels:
+    app.kubernetes.io/instance: django
+spec:
+  type: ClusterIP  
+  ports:
+  - name: queue
+    port: 5672
+  selector:
+    app: queue
