@@ -19,7 +19,7 @@ spec:
       terminationGracePeriodSeconds: 0
       containers:
       - name: celery-worker
-        image: bitsean/crypto_trader:1.6
+        image: bitsean/crypto_trader:1.7
         command: ["celery", "-A", "crypto_trader", "worker", "-l", "info"]
         env:
         - name: MYSQL_PASS
