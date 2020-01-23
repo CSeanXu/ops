@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: spa-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/tls-acme: 'true'
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+spec:
+  tls:
+  - hosts:
+    - spa.cuteyj.top
+    secretName: spa-letsencrypt-prod
+  rules:
+  - host: spa.cuteyj.top
+    http:
+      paths:
+      - backend:
+          serviceName: spa
+          servicePort: 5000

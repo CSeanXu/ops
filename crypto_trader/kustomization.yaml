@@ -24,3 +24,7 @@ resources:
 - rabbitmq-stateful-set.yml
 - celery-worker-deployment.yml
 - celery-beat-deployment.yml
+- socket-deployment.yml
+- socket-ingress.yml
+- spa-deployment.yml
+- spa-ingress.yml
